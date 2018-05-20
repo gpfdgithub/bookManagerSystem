@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.gpf.pojo"> 
+    
+    	<class name="User" table="user" lazy="false" >
+    		<id name="id">
+    			<generator class="native"></generator>
+    		</id>
+    		<property name="username"></property>
+    		<property name="password"></property>
+    		<property name="telphoneNumber"></property>
+    		
+    		<set name="books" lazy="false">
+    			<key column="Book_IN_User"></key>
+    			<one-to-many class="cn.gpf.pojo.Book"></one-to-many>
+    		</set>
+    		
+    		<set name="records" lazy="false">
+    			<key column="user_record_fk"></key>
+    			<one-to-many class="cn.gpf.pojo.Record"></one-to-many>
+    		</set>
+    		
+    	</class>
+ 		
+</hibernate-mapping>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+	
+<struts>
+	<!-- struts与spring整合要注意 class的值不在是完整类名 而是applicationContext中的bean的name元素 -->
+	<constant name="struts.objectFactory" value="spring"></constant>
+		
+		
+	
+	
+		<package name="itcast" namespace="/" extends="struts-default">
+		
+			
+			<action name="UserAction_*" class="cn.gpf.web.action.UserAction" method="{1}">
+					<result name="failureLogin">/login.jsp</result>
+					<result name="successLogin" type="redirect">/index.jsp</result>
+					<result name="loginout"  type="redirect">/login.jsp</result>
+					<result name="showUsersBypage">/showUsersByPgae.jsp</result>
+			</action>
+			
+			<action name="BookAction_*" class="cn.gpf.web.action.BookAction" method="{1}">
+				<result name="Bookpage">/showBooksByPgae.jsp</result>
+			</action>
+			
+			<action name="RecordAction_*" class="cn.gpf.web.action.RecordAction" method="{1}">
+				<result name="showRecord">/showRecord.jsp</result>
+			</action>
+			
+			
+		</package>
+
+		
+</struts>
