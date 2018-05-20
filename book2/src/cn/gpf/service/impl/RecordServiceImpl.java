@@ -1,11 +1,15 @@
 package cn.gpf.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.gpf.dao.RecordDao;
+import cn.gpf.pojo.Book;
 import cn.gpf.pojo.Record;
+import cn.gpf.pojo.User;
 import cn.gpf.service.RecordService;
 import cn.gpf.utils.PageBean;
 
@@ -74,5 +78,48 @@ public class RecordServiceImpl implements RecordService {
 		}
 		
 	}
-	
+
+
+
+
+	@Override
+	public List<Integer> findBookIdsbelongLoginUser(Integer user_id) {
+		
+		return recordDao.findBookIdsByUserId(user_id);
+	}
+
+
+
+
+	@Override
+	public List<Record> findRecordByUser(User uu) {
+		return recordDao.findBooksByUser(uu);
+	}
+
+
+
+
+	@Override
+	public Record findRecordByBook(Book book) {
+		
+		return recordDao.findRecordBybook(book);
+	}
+
+
+
+
+	@Override
+	public void update(Record rd) {
+
+		recordDao.update(rd);
+	}
+
+
+
+
+
+
+
+
+
 }

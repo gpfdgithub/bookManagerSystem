@@ -123,17 +123,14 @@ public class BaseDaoimpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 		return null;
 		
 	}
-
-	
-
-
-
-
-
-	
-
-	
-
-
-
 }
+
+	
+
+
+
+
+
+	
+
+

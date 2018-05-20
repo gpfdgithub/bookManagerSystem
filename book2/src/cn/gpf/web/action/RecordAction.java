@@ -1,7 +1,11 @@
 package cn.gpf.web.action;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
@@ -12,9 +16,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
 
 import cn.gpf.pojo.Book;
 import cn.gpf.pojo.Record;
+import cn.gpf.pojo.User;
 import cn.gpf.service.BookService;
 import cn.gpf.service.RecordService;
 import cn.gpf.utils.PageBean;
@@ -23,13 +29,30 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 @Controller
 @Scope("prototype")
-public class RecordAction extends ActionSupport{
+public class RecordAction extends ActionSupport implements ModelDriven<Record>{
 	
 	
 	private String bookname;
 	
 	private String username;
 	
+	private Integer book_id;
+	
+	@Autowired
+	private BookService bookservice;
+	
+
+
+	public void setBookservice(BookService bookservice) {
+		this.bookservice = bookservice;
+	}
+
+
+	public void setBook_id(Integer book_id) {
+		this.book_id = book_id;
+	}
+
+
 	public String getUsername() {
 		return username;
 	}
@@ -56,8 +79,6 @@ public class RecordAction extends ActionSupport{
 	
 	private String ids;
 	
-	@Autowired
-	private BookService bookService;
 	
 	public Integer getPage() {
 		return page;
@@ -91,6 +112,8 @@ public class RecordAction extends ActionSupport{
 
 	@Autowired
 	private RecordService recordService;
+
+	private Record record=new Record();
 	
 	
 	public String pageQuery() throws IOException
@@ -137,6 +160,73 @@ public class RecordAction extends ActionSupport{
 		recordService.deleteInBatch(ids);
 		
 		return "showRecord";
+	}
+	
+	public String borrow() throws IOException
+	{
+		String str="1";
+		
+		record.setBorrowDate(new Date());
+		
+		Book book = bookservice.findById(book_id);
+		
+		book.setIsBorrow(true);
+		
+		bookservice.update(book);
+		
+		record.setBook(book);
+		
+		User uu = (User) ServletActionContext.getRequest().getSession().getAttribute("loginUser");
+		
+		if(uu!=null)
+		{
+			record.setUser(uu);
+			
+			recordService.save(record);
+		}
+		else
+		{
+			str="2";
+		}
+		
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		
+		response.getWriter().print(str);
+		return NONE;
+	}
+	
+	public String editRecord() throws IOException
+	{
+		//»¹ÊéµÄ
+		Book book = bookservice.findById(book_id);
+		
+		book.setIsBorrow(false);
+		
+		bookservice.update(book);
+		
+		Record rd=recordService.findRecordByBook(book);
+		
+		rd.setReturnDate(new Date());
+		
+		recordService.update(rd);
+		
+		String str="1";
+		
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		
+		response.getWriter().print(str);
+		
+		return NONE;
+	}
+
+	@Override
+	public Record getModel() {
+		// TODO Auto-generated method stub
+		return record;
 	}
 
 }

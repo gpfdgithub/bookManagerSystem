@@ -4,14 +4,15 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="cn.gpf.pojo"> 
-    	<class name="Record" table="t_record" lazy="false">
+    	<class  name="Record" table="t_record" lazy="false">
     		<id name="id">
     			<generator class="native"></generator>
     		</id>
     		<property name="borrowDate"></property>
     		<property name="returnDate"></property>
 	
-			<many-to-one name="book" column="book_b_record_fk" class="cn.gpf.pojo.Book" lazy="false"></many-to-one>
-			<many-to-one name="user" column="user_record_fk" class="cn.gpf.pojo.User" lazy="false"></many-to-one>
+			<many-to-one name="book" column="book_b_record_fk" class="cn.gpf.pojo.Book" lazy="false" update="true"></many-to-one>
+			<many-to-one name="user" column="user_record_fk" class="cn.gpf.pojo.User" lazy="false" update="true"></many-to-one>
+			
     	</class>
 </hibernate-mapping>

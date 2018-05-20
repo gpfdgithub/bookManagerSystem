@@ -22,6 +22,7 @@
 			
 			<action name="BookAction_*" class="cn.gpf.web.action.BookAction" method="{1}">
 				<result name="Bookpage">/showBooksByPgae.jsp</result>
+				<result name="login">/login.jsp</result>
 			</action>
 			
 			<action name="RecordAction_*" class="cn.gpf.web.action.RecordAction" method="{1}">

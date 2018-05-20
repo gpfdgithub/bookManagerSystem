@@ -58,6 +58,12 @@ public class BookServiceImpl implements BookService{
 		return bookDao.findOneByName(bookname);
 	}
 
+	@Override
+	public Book findById(Integer bid) {
+		
+		return bookDao.findById(bid);
+	}
+
 	
 	
 

@@ -15,6 +15,9 @@ public interface BookService {
 	void update(Book book);
 
 	Book findByName(String bookname);
+
+	Book findById(Integer bid);
+
 		
 
 }

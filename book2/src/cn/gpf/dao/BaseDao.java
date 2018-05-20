@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 
+import cn.gpf.pojo.Book;
+import cn.gpf.pojo.Record;
 import cn.gpf.utils.PageBean;
 
 public interface BaseDao<T>{
@@ -17,4 +19,5 @@ public interface BaseDao<T>{
 	public List<T> findAll();
 	public T findOneByName(String name);
 	public void queryPageBean(PageBean pagebean);
+	
 }

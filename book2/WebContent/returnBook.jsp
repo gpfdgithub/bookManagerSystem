@@ -11,25 +11,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-1.8.3.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript">
-	function qq(value,name)
-	{
-		if(name=="all"||name=="other")
-		{
-			alert(value+":"+name);
-			$('#serachTable').datagrid('load',{
-				name:value
-			  });  
-		}
-		else
-		{
-			$('#serachTable').datagrid('load',{
-				name:value,
-				type:name
-			  }); 
-			
-		}
-		
-	}
 	function showTable()
 	{
 		var columns=[[	
@@ -65,26 +46,11 @@
 		            		
 		            	  }
 		              },
-		              
-		              {
-		            	  field:'isBorrow',
-		            	  title:'是否借出',
-		            	  width:100,
-		            	  formatter: function(value,row,index){
-		            	         if (value==true){
-		            	            return "已经借出";
-		            	         } else {
-		            	            return "未借出";
-		            	         }  			
-		            	     }  
-		              
-		              },
-		              
 		        ]];
 
 		$('#serachTable').datagrid({ 
 		
-			url:'BookAction_pageQuery',
+			url:'BookAction_pageQueryLoginUser',
 		
 			columns:columns,
 		
@@ -92,9 +58,9 @@
 			
 			pagination:true,
 			
-			pageSize:5,
+			pageSize:10,
 			
-			pageList:[5,10,15,20],
+			pageList:[10,15,20],
 			
 			striped:true,
 			
@@ -102,64 +68,42 @@
 		
 			}); 
 	}
-	function doDbClickEdit(rowIndex, rowData)
-	{
+function doDbClickEdit(rowIndex, rowData)
+{
+	$.post("${pageContext.request.contextPath}/RecordAction_editRecord",
+			{"book_id":rowData.id},
+			function(data){
+				
+			if(data=='1')
+			{
+				alert("成功还书！");
+			}
 		
-		
-		$.messager.confirm('Confirm','你确定借这本书吗？',function(r){ 
-			if(r)
-			{ 
-				if(rowData.isBorrow==false)
-				{
-					$.post("${pageContext.request.contextPath}/RecordAction_borrow",
-							
-							{"book_id":rowData.id},
-							
-							function(data)
-					{
-							if(data=='1')
-							{
-								alert('完成'); 
-							}
-							else
-							{
-								alert("出现异常！请重试(可能没有登录)");
-							}
-					},
-					"text"
-					);
-				}
-				else
-				{
-					alert("借书失败，该书已经借出！");
-				}
-			  
-			} 
-			});
-
-	}
+		},
+		"text"
+		);
+}
 </script>
 
 <body onload="showTable()">
 
-		<input class="easyui-searchbox" style="width:300px" data-options="searcher:qq,prompt:'请输入书名',menu:'#mm'" type="text" name="" id="" >
-		<div id="mm" style="width:120px"> 
-			<div data-options="name:'all',iconCls:'icon-ok'">所有书籍</div> 
-			<div data-options="name:'sports'">科普类</div>
-			<div data-options="name:'word'">文学类</div>
-			<div data-options="name:'computer'">计算机类</div>
-			<div data-options="name:'other'">其它类</div>
+		<div>
+			<h3>
+				借书列表如下：
+			</h3>
+			
 		</div>
-		
-		
 		<table id="serachTable">
 			
 		</table>
 		
+			
 		<div>
-			<h2>提示：双击选中的图书进行借书！</h2>
+			<h3>
+				提示：双击选中的的图书即可完成还书！
+			</h3>
+			
 		</div>
-	
 		
 </body>
 </html>

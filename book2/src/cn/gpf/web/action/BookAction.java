@@ -1,6 +1,8 @@
 package cn.gpf.web.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +17,10 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
 import cn.gpf.pojo.Book;
+import cn.gpf.pojo.Record;
+import cn.gpf.pojo.User;
 import cn.gpf.service.BookService;
+import cn.gpf.service.RecordService;
 import cn.gpf.utils.PageBean;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -30,6 +35,9 @@ public class BookAction extends ActionSupport implements ModelDriven<Book>{
 	private String ids;
 	
 	private Book book=new Book();
+	
+	@Autowired
+	private RecordService recordService;
 	
 	//≤È’“Ãıº˛
 	
@@ -81,6 +89,60 @@ public class BookAction extends ActionSupport implements ModelDriven<Book>{
 		return NONE;
 	}
 	
+	public String pageQueryLoginUser() throws IOException
+	{
+		
+		User uu=(User) ServletActionContext.getRequest().getSession().getAttribute("loginUser");
+		
+		if(uu==null)
+		{
+			return "login";
+		}
+		
+		List<Record> records=recordService.findRecordByUser(uu);
+		
+		List<Book> books=new ArrayList<>();
+		
+		for(Record re:records)
+		{
+			Book bb=re.getBook();
+			
+			if(bb!=null)
+			{
+				if(bb.getIsBorrow()==null||bb.getIsBorrow()==true)
+				{
+					books.add(re.getBook());
+				}
+				
+			}
+			
+			
+		}
+		
+		PageBean pagebean=new PageBean();
+		
+		pagebean.setPageSize(rows);
+		
+		pagebean.setCurrentPage(page);
+		
+		pagebean.setRows(books);
+		
+		JsonConfig jsonConfig = new JsonConfig();
+		
+		jsonConfig.setExcludes(new String[]{"currentPage","detachedCriteria","pageSize","bookRecords","bookUser"});
+		
+		String json = JSONObject.fromObject(pagebean,jsonConfig).toString();
+		
+		ServletActionContext.getResponse().setCharacterEncoding("utf-8");
+		
+		ServletActionContext.getResponse().getWriter().print(json);
+		
+		ServletActionContext.getResponse().setContentType("text/json;charset=utf-8");
+		
+		
+		return NONE;
+	}
+	
 	public String add() throws IOException
 	{
 		bookService.save(book);
@@ -108,7 +170,7 @@ public class BookAction extends ActionSupport implements ModelDriven<Book>{
 	{
 		
 		bookService.update(book);
-		
+				
 		String str="1";
 		
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -122,13 +184,7 @@ public class BookAction extends ActionSupport implements ModelDriven<Book>{
 	}
 	
 
-	
-	
-	
-	
-	
-	
-	
+
 	
 	public Integer getPage() {
 		return page;

@@ -17,7 +17,7 @@
     		<property name="type"></property>
     		<property name="isBorrow"></property>
     		<many-to-one name="bookUser" column="Book_IN_User" class="cn.gpf.pojo.User" lazy="false"></many-to-one>
-    		<set name="bookRecords" lazy="false" >
+    		<set name="bookRecords" lazy="false">
     			<key column="book_b_record_fk" ></key>
     			<one-to-many class="cn.gpf.pojo.Record"></one-to-many>
     		</set>

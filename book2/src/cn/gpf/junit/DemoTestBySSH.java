@@ -1,20 +1,26 @@
 package cn.gpf.junit;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.gpf.dao.BookDao;
+import cn.gpf.dao.RecordDao;
 import cn.gpf.dao.UserDao;
 import cn.gpf.pojo.Book;
 import cn.gpf.pojo.Record;
 import cn.gpf.pojo.User;
+import cn.gpf.service.BookService;
 import cn.gpf.service.RecordService;
 import cn.gpf.service.UserService;
 
@@ -28,10 +34,16 @@ public class DemoTestBySSH {
 	private BookDao bookDao;
 	
 	@Autowired
+	private BookService bookService;
+	
+	@Autowired
 	private RecordService recordService;
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private RecordDao recordDao;
 	
 	@Test
 	public void demo1()
@@ -109,6 +121,33 @@ public class DemoTestBySSH {
 			
 			
 		}
+		
+		
+	}
+	@Test
+	public void demo5()
+	{
+	/*	List<Integer> ids=recordService.findBookIdsbelongLoginUser(1);
+		List<Book> books=new ArrayList<Book>();
+		
+		if(ids!=null&&ids.size()>0)
+		{
+			for(Integer bid:ids)
+			{
+				Book book=bookService.findById(bid);
+				books.add(book);
+				
+			}
+		}*/
+		User uu = userDao.findById(1);
+		
+		List<Record> records=recordService.findRecordByUser(uu);
+		
+		for(Record re:records)
+		{
+			System.out.println(re.getBook());
+		}
+		
 		
 		
 	}

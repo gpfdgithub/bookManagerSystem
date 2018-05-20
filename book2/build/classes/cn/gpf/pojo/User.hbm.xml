@@ -18,8 +18,8 @@
     			<one-to-many class="cn.gpf.pojo.Book"></one-to-many>
     		</set>
     		
-    		<set name="records" lazy="false">
-    			<key column="user_record_fk"></key>
+    		<set name="records" lazy="false" > 
+    			<key column="user_record_fk" ></key>
     			<one-to-many class="cn.gpf.pojo.Record"></one-to-many>
     		</set>
     		

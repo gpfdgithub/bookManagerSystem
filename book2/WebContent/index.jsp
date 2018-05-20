@@ -139,6 +139,28 @@
 			});
 		}
 	}
+	
+	function openReturnBookPage()
+	{
+	contentB='<iframe frameborder="0" src="returnBook.jsp"  width="100%" height="100%"/>';
+		
+		var exists=$("#mytabs").tabs("exists","还书界面");
+		
+		if(exists)
+		{
+			$("#mytabs").tabs("select","还书界面");
+		}
+		else
+		{
+			$("#mytabs").tabs("add",{
+				
+				title:"还书界面",
+				closable:true,
+				iconCls:'icon-edit',
+				content:contentB
+			});
+		}
+	}
 </script>
 </head>
 <body class="easyui-layout" onload="doshow()">
@@ -207,6 +229,7 @@
 			</div>
 			<div title="借书点这">
 				<br/><br/><a id="button4" class="easyui-linkbutton" onclick="openBorrowBookPage()">开始借书</a><br/><br/>
+				<a id="button5" class="easyui-linkbutton" onclick="openReturnBookPage()">开始还书</a><br/><br/>
 			</div>
 		</div>
 	</div>
